@@ -1,0 +1,9 @@
+tensorflow==2.3.0
+keras==2.4.3
+pydub==0.24.1
+librosa
+scipy==1.5.4
+scikit-learn
+opencv-contrib-python
+imutils
+numpy
