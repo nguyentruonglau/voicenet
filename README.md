@@ -16,7 +16,7 @@ Model has three stage, each stage is separated by Pooling2D, Nodes are convoluti
 
 If there is a link from one Node to another, the link will be set to 1, in contrast to 0.
 
-After the search process, the resulting architecture is: 1-01 -- 1-01-001 -- 1-01 (model is depicted by figure above)
+After the search process, the resulting architecture is: 1-01-1-01-001-1-01 (model is depicted by figure above)
 
 ```
 
