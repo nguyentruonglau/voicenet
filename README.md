@@ -1,4 +1,3 @@
-﻿# Genetic VoiceNet
 # Genetic VoiceNet [![CircleCI](https://circleci.com/gh/faustomorales/keras-ocr.svg?style=shield)](https://github.com/nguyentruonglau) [![Documentation Status](https://readthedocs.org/projects/keras-ocr/badge/?version=latest)](https://github.com/nguyentruonglau)
 
 Code accompanying the paper. All codes assume running from root directory. Please update the sys path at the beginning of the codes before running.
@@ -57,7 +56,7 @@ python train.py -batch 64 -class 80 -epochs 100
 ## Citations
 If you find the code useful for your research, please consider citing our works
 ``` 
-@article{nsganet,
+@article{voicenet,
   title={Evolutionary Neural Architecture Search For Vietnamese Speaker Recognition},
   author={Nguyễn Trường Lâu - Student at University of Information Technology (UIT)},
   booktitle={NAS},
