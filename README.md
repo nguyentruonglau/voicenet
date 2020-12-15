@@ -1,11 +1,25 @@
 ﻿# Genetic VoiceNet
+# Genetic VoiceNet [![CircleCI](https://circleci.com/gh/faustomorales/keras-ocr.svg?style=shield)](https://github.com/nguyentruonglau) [![Documentation Status](https://readthedocs.org/projects/keras-ocr/badge/?version=latest)](https://github.com/nguyentruonglau)
+
 Code accompanying the paper. All codes assume running from root directory. Please update the sys path at the beginning of the codes before running.
 > [Evolutionary Neural Architecture Search For Vietnamese Speaker Recognition]
 >
 > Nguyễn Trường Lâu - Student at University of Information Technology (UIT)
 >
 
-![overview](https://github.com/nguyen-truong-lau/genetic-voicenet/blob/main/img/model2model.png "Overview of Genetic VoiceNet")
+![overview](https://github.com/nguyen-truong-lau/genetic-voicenet/blob/main/img/model2model.png "Model Architecture")
+
+## Over View
+``` 
+This is the architecture of the model I looked for based on the evolutionary algorithm on the Famous Voice Dataset.
+
+Model has three stage, each stage is separated by Pooling2D, Nodes are convolution block like: identity block in ResNet, Bottleneck block in MobileNet version 3 (dethwise block, point wise, se block),....
+
+If there is a link from one Node to another, the link will be set to 1, in contrast to 0.
+
+After the search process, the resulting architecture is: 1-01 -- 1-01-001 -- 1-01 (model is depicted by figure above)
+
+```
 
 ## Requirements
 ``` 
@@ -22,10 +36,10 @@ model/voicenet.hdf5
 ## Dataset
 ``` 
     data--
-        --John
+        --Speaker One
           voice_1.wav
           voice_2.wav
-        --Stone
+        --Speaker Two
           voice_1.wav
           voice_2.wav
 ```
