@@ -19,6 +19,7 @@ If there is a link from one Node to another, the link will be set to 1, in contr
 After the search process, the resulting architecture is: 1-01-1-01-001-1-01 (model is depicted by figure above)
 
 ```
+![Training](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/training.png "Training")
 
 ## Requirements
 ``` 
