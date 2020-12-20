@@ -6,7 +6,7 @@ Code accompanying the paper. All codes assume running from root directory. Pleas
 > Nguyễn Trường Lâu - Student at University of Information Technology (UIT)
 >
 
-![overview](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/training.png "Model Architecture")
+![overview](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/model.png "Model Architecture")
 
 ## Over View
 ``` 
@@ -19,7 +19,7 @@ If there is a link from one Node to another, the link will be set to 1, in contr
 After the search process, the resulting architecture is: 1-01-1-01-001-1-01 (model is depicted by figure above)
 
 ```
-![Training](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/training.png "Training")
+![Training](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/train.png "Training")
 
 ## Requirements
 ``` 
