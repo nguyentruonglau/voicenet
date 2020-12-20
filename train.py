@@ -77,7 +77,6 @@ ds_validation = ds_validation.map(
 ds_validation = ds_validation.cache()
 ds_validation = ds_validation.prefetch(tf.data.experimental.AUTOTUNE)
 
-
 #model
 model = VoiceNet(input_shape = (img_height, img_width, 1), classes = num_class)
 
@@ -101,47 +100,3 @@ model.compile(optimizer = opt, loss = keras.losses.SparseCategoricalCrossentropy
 
 # Fitting the CNN
 model.fit(ds_train, validation_data=ds_validation, epochs=EPOCHS, callbacks=[checkpoint])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-model.compile(
-    optimizer=keras.optimizers.Adam(),
-    loss=[
-            keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-        ],
-    metrics=['accuracy']
-)
-
-
-model.fit(ds_train, validation_data=ds_validation, epochs=2, verbose=1)
-
-
-
-
-
-
-
-
-
-
