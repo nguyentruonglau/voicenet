@@ -176,11 +176,9 @@ def __bottleneck_block(_inputs, out_dim, kernel, strides, expansion_dim, is_use_
                 x = Add()([x, _inputs])
     return x
 
-def VoiceNet(input_shape=(40, 160, 1), classes=80):
+def VoiceNet(input_shape=(40, 80, 1), classes=40):
     """
-    Implementation of the popular ResNet50 the following architecture:
-    CONV2D -> BATCHNORM -> RELU -> MAXPOOL -> CONVBLOCK -> IDBLOCK*2 -> CONVBLOCK -> IDBLOCK*3
-    -> CONVBLOCK -> IDBLOCK*5 -> CONVBLOCK -> IDBLOCK*2 -> AVGPOOL -> TOPLAYER
+    Implementation of Genetic VoiceNet
 
     Arguments:
     input_shape -- shape of the images of the dataset
@@ -196,7 +194,7 @@ def VoiceNet(input_shape=(40, 160, 1), classes=80):
     # Zero-Padding
     X = ZeroPadding2D((3, 3))(X_input)
 
-    # Base
+    # Stage 0
     X = Conv2D(64, (7, 7), strides=(2, 2), kernel_initializer=glorot_uniform(seed=0))(X)
     X = BatchNormalization(axis=3)(X)
     X = Activation('relu')(X)
@@ -204,30 +202,30 @@ def VoiceNet(input_shape=(40, 160, 1), classes=80):
     X = MaxPooling2D((3, 3), strides=(2, 2))(X)
 
     # Stage 1
-    X = convolutional_block(X, f=3, filters=[64, 64, 256], stage=1, block='a', s=1)
-    X = identity_block(X, 3, [64, 64, 256], stage=1, block='b')
-    X = identity_block(X, 3, [64, 64, 256], stage=1, block='c')
-    X = convolutional_block(X, f=3, filters=[64, 64, 256], stage=1, block='a', s=1)
+    Y_in = convolutional_block(X, f=3, filters=[64, 64, 256], stage=1, block='a', s=1)
+    Y_I = identity_block(Y_in, 3, [64, 64, 256], stage=1, block='1_I')
+    Y_III = identity_block(Y_I, 3, [64, 64, 256], stage=1, block='1_III')
+    Y_out = convolutional_block(Y_III, f=3, filters=[64, 64, 256], stage=1, block='a', s=1)
 
     ### START CODE HERE ###
-    X = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(X)
+    X = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(Y_out)
 
-    X = __bottleneck_block(X, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=1)
-    X = __bottleneck_block(X, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=2)
-    X = __bottleneck_block(X, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=3)
-    X = __bottleneck_block(X, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=4)
+    Z_in = X
+    Z_I = __bottleneck_block(Z_in, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=1)
+    Z_II = __bottleneck_block(Z_I, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=2)
+    Z_III = __bottleneck_block(Z_II, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=3)
+    Z_IV = __bottleneck_block(Z_III, out_dim=256, kernel=(3,3), strides=(1,1), expansion_dim=256, is_use_bias=False, shortcut=True, is_use_se=True, activation='HS', num_layers=4)
+    Z_out = Z_IV
 
-    X = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(X)
-    ### END CODE ###
+    X = MaxPooling2D((3, 3), strides=(2, 2), padding='same')(Z_out)
+    ### CODE ###
 
-    # Stage 3 (≈3 lines)
-    X = convolutional_block(X, f = 3, filters = [256, 256, 512], stage = 3, block='a', s = 1)
-    X = identity_block(X, 3, [256, 256, 512], stage=3, block='b')
-    X = identity_block(X, 3, [256, 256, 512], stage=3, block='c')
-    X = convolutional_block(X, f = 3, filters = [256, 256, 512], stage = 3, block='a', s = 1)
+    # Stage 3
+    M_in = convolutional_block(X, f = 3, filters = [256, 256, 512], stage = 3, block='c', s = 1)
+    M_out = convolutional_block(M_in, f = 3, filters = [256, 256, 512], stage = 3, block='c', s = 1)
 
-    # AVGPOOL (≈1 line). Use "X = AveragePooling2D(...)(X)"
-    X = AveragePooling2D((2,2), name="avg_pool")(X)
+    # AVGPOOL. Use "X = AveragePooling2D(...)(X)"
+    X = AveragePooling2D((2,2), name="avg_pool")(M_out)
 
     ### END CODE HERE ###
 
@@ -236,7 +234,7 @@ def VoiceNet(input_shape=(40, 160, 1), classes=80):
     X = Dense(classes, activation='softmax', name='fc' + str(classes), kernel_initializer = glorot_uniform(seed=0))(X)
     
     # Create model
-    model = Model(inputs = X_input, outputs = X, name='VoiceNet')
+    model = Model(inputs = X_input, outputs = X)
 
     return model
 
@@ -244,7 +242,7 @@ def VoiceNet(input_shape=(40, 160, 1), classes=80):
 
 def main():
   #load model
-  model = VoiceNet(input_shape = (40, 160, 1), classes = 80)
+  model = VoiceNet(input_shape = (40, 80, 1), classes = 40)
 
   model.summary()
 
