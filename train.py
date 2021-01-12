@@ -27,35 +27,35 @@ args = vars(ap.parse_args())
 
 #defines some parameters
 img_height = 40
-img_width = 160
+img_width = 80
 batch_size = int(args['batch_size'])
 num_class = int(args['num_class'])
 
 #train
 ds_train = tf.keras.preprocessing.image_dataset_from_directory(
-    './img_data/',
+    'mfcc_feature',
     labels = 'inferred',
-    label_mode = 'int',
+    label_mode = 'categorical',
     color_mode = 'grayscale',
-    batch_size = batch_size,
-    image_size = (img_height, img_width),
+    batch_size = 256,
+    image_size = (40, 80),
     shuffle = True,
     seed = 42,
-    validation_split = 0.2,
+    validation_split = 0.1,
     subset = 'training'
 )
 
 #validation
 ds_validation = tf.keras.preprocessing.image_dataset_from_directory(
-    './img_data/',
+    'mfcc_feature/',
     labels = 'inferred',
-    label_mode = 'int',
+    label_mode = 'categorical',
     color_mode = 'grayscale',
-    batch_size = batch_size,
-    image_size = (img_height, img_width),
+    batch_size = 256,
+    image_size = (40, 80),
     shuffle = True,
     seed = 42,
-    validation_split = 0.2,
+    validation_split = 0.1,
     subset = 'validation'
 )
 
@@ -64,6 +64,19 @@ def normalize_img(image, label):
     """Normalizes images: `uint8` -> `float32`."""
     return tf.cast(image, tf.float32) / 255., label
 
+#display
+def displays(H, EPOCHS):
+  # plot the training loss and accuracy
+  N = np.arange(0, EPOCHS)
+  plt.style.use("ggplot")
+  plt.figure()
+  plt.plot(N, H.history["accuracy"], label="train_acc")
+  plt.plot(N, H.history["val_accuracy"], label="val_acc")
+  plt.title("Training Accuracy (VoiceNet)")
+  plt.xlabel("Epoch")
+  plt.ylabel("Loss/Accuracy")
+  plt.legend()
+  plt.savefig("VoiceNet.jpg")
 
 #prefetch train
 ds_train = ds_train.map(
@@ -99,4 +112,8 @@ opt = Adam(learning_rate=INIT_LR) #decay=INIT_LR/EPOCHS
 model.compile(optimizer = opt, loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True) , metrics = ['accuracy'])
 
 # Fitting the CNN
-model.fit(ds_train, validation_data=ds_validation, epochs=EPOCHS, callbacks=[checkpoint])
+with tf.device("/gpu:0"):
+    H = model.fit(ds_train, validation_data=ds_validation, epochs=EPOCHS, callbacks=[checkpoint])
+    
+#display
+displays(H, EPOCHS)
