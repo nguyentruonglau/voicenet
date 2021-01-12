@@ -11,15 +11,7 @@ Code accompanying the paper. All codes assume running from root directory. Pleas
 ## Over View
 ``` 
 This is the architecture of the model I looked for based on the evolutionary algorithm on the Famous Voice Dataset.
-
-Model has three stage, each stage is separated by Pooling2D, Nodes are convolution block like: identity block in ResNet, Bottleneck block in MobileNet version 3 (dethwise block, point wise, se block),....
-
-If there is a link from one Node to another, the link will be set to 1, in contrast to 0.
-
-After the search process, the resulting architecture is: 1-01-1-01-001-1-01 (model is depicted by figure above)
-
 ```
-![Training](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/train.png "Training")
 
 ## Requirements
 ``` 
