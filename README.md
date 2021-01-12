@@ -10,7 +10,7 @@ Code accompanying the paper. All codes assume running from root directory. Pleas
 
 ## Over View
 ``` 
-This is the architecture of the model I looked for based on the evolutionary algorithm on the Famous Voice Dataset.
+This is the architecture of the model I looked for based on the Genetic Algorithm on the Famous Voice Dataset.
 ```
 
 ## Requirements
