@@ -6,7 +6,7 @@ Code accompanying the paper. All codes assume running from root directory. Pleas
 > Nguyễn Trường Lâu - Student at University of Information Technology (UIT)
 >
 
-![overview](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/architecture.png "Model Architecture")
+![overview](https://github.com/nguyentruonglau/Genetic-VoiceNet/blob/main/img/model.png "Model Architecture")
 
 ## Over View
 ``` 
