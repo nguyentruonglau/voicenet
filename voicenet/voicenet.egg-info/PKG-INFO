@@ -1,0 +1,26 @@
+Metadata-Version: 1.1
+Name: voicenet
+Version: 1.1.0
+Summary: Convolutional neural network architecture found by nondominated sorting genetic algorithm ii with code: 0-10 - 1-01-001 - 0-00
+Home-page: https://github.com/nguyentruonglau/VoiceNet
+Author: Nguyen Truong Lau
+Author-email: ttruongllau@gmail.com
+License: UIT
+Description: VoiceNet
+        --------
+        
+        To setup, simply do::
+        	>>> pip install voicenet
+        
+        To use, simply do::
+        
+            >>> from voicenet import VoiceNet
+            >>> model = VoiceNet(input_shape=(40,80,1), classes=40)
+            >>> model.summary()
+        
+        Author::
+        	>>> Nguyen Truong Lau
+Keywords: nondominated sorting genetic algorithm ii,neural architecture search,convolutional neural network
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent

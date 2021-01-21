@@ -14,48 +14,55 @@ from voicenet import VoiceNet
 import matplotlib.pyplot as plt
 import argparse
 import os
+from utils import read_config_train
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-batch", "--batch_size", required=False, default=64,
+ap.add_argument("-batch_size", "--batch_size", required=False, default=32,
     help="Batch size")
-ap.add_argument("-class", "--num_class", required=False, default=80,
+ap.add_argument("-num_class", "--num_class", required=False, default=40,
     help="Number of class")
 ap.add_argument("-epochs", "--epochs", required=False, default=100,
     help="Number of epochs")
 args = vars(ap.parse_args())
 
+#path to config file
+cfg_file = './cfg/config.cfg'
+
+#read config file
+options = read_config_train(cfg_file)
+
 #defines some parameters
-img_height = 40
-img_width = 80
+img_height = options.img_height
+img_width = options.img_width
 batch_size = int(args['batch_size'])
 num_class = int(args['num_class'])
 
 #train
 ds_train = tf.keras.preprocessing.image_dataset_from_directory(
-    'mfcc_feature',
+    'mfcc',
     labels = 'inferred',
     label_mode = 'categorical',
     color_mode = 'grayscale',
-    batch_size = 256,
-    image_size = (40, 80),
+    batch_size = options.batch_size,
+    image_size = options.image_size,
     shuffle = True,
-    seed = 42,
-    validation_split = 0.1,
+    seed = options.seed,
+    validation_split = options.validation_split,
     subset = 'training'
 )
 
 #validation
 ds_validation = tf.keras.preprocessing.image_dataset_from_directory(
-    'mfcc_feature/',
+    'mfcc',
     labels = 'inferred',
     label_mode = 'categorical',
     color_mode = 'grayscale',
-    batch_size = 256,
-    image_size = (40, 80),
+    batch_size = options.batch_size,
+    image_size = options.image_size,
     shuffle = True,
-    seed = 42,
-    validation_split = 0.1,
+    seed = options.seed,
+    validation_split = options.validation_split,
     subset = 'validation'
 )
 
@@ -76,7 +83,7 @@ def displays(H, EPOCHS):
   plt.xlabel("Epoch")
   plt.ylabel("Loss/Accuracy")
   plt.legend()
-  plt.savefig("VoiceNet.jpg")
+  plt.savefig("voicenet.jpg")
 
 #prefetch train
 ds_train = ds_train.map(
@@ -97,14 +104,14 @@ model = VoiceNet(input_shape = (img_height, img_width, 1), classes = num_class)
 if not os.path.exists('model'):
     os.mkdir('model')
 
-path_save_model = './model/voicenet.hdf5'
+path_save_model = options.path_save_model
 
 #model checkpoint
 checkpoint = ModelCheckpoint(path_save_model, monitor='val_loss', verbose=1, save_best_only=True, mode='min', save_weights_only=False)
 
 
 # Initialize our initial learning rate and # of epochs to train for
-INIT_LR = 0.001
+INIT_LR = options.init_lr
 EPOCHS = int(args['epochs'])
 
 #Compiling

@@ -1,3 +1,4 @@
+
 import argparse
 import numpy as np
 from imutils.paths import list_files
@@ -9,11 +10,11 @@ import cv2
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
 ap.add_argument("-i", "--input", required=True,
-	help="Path to folder of dataset, path_to_data = './data/'")
+    help="Path to folder of dataset, path_to_data = './data/'")
 args = vars(ap.parse_args())
 
 def normalization(path_to_data):
-    """Load all wavs file and split 4s/file
+    """Load all wavs file and split 2s/file
     ex: path_to_data = './data/'
 
     Args:
@@ -32,7 +33,7 @@ def normalization(path_to_data):
             folders.add(folder_name)
         folders = list(folders)
 
-        #data normalization, 4s/wav file
+        #data normalization, 2s/wav file
         for folder in folders:
             paths = list_files(path_to_data + folder + '/')
             audios = AudioSegment.empty()
@@ -44,10 +45,10 @@ def normalization(path_to_data):
                 os.remove(path_)
 
             L = len(audios)
-            N = int(L/4000)
+            N = int(L/2000)
 
             for i in range(N):
-                wav = audios[i*4000:(i+1)*4000]
+                wav = audios[i*2000:(i+1)*2000]
                 wav.export(path_to_data + folder + '/{}.wav'.format(i), format='wav')
             
             #destroy
@@ -66,7 +67,7 @@ def mfcc_feature_extraction(file_name):
     Returns:
         [2D array]: MFCC features
     """
-    max_pad_len = 200
+    max_pad_len = 100
     try:
         audio, sample_rate = librosa.load(file_name, res_type='kaiser_fast') 
         mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
@@ -99,7 +100,7 @@ def convert_mfcc2img(mfcc):
       
       img_mfcc = (mfcc-MIN)/(MAX-MIN) * (NEW_MAX-NEW_MIN)
 
-      img_mfcc =img_mfcc[:,0:160]
+      img_mfcc =img_mfcc[:,0:80]
 
     except Exception as e:
       print("Error encountered: ", e)
@@ -109,9 +110,14 @@ def convert_mfcc2img(mfcc):
 
 
 def create_data(path_to_data):
+    """Create dataset (contain mfcc feature) for training
+
+    Args:
+        path_to_data ([string]): path to input folder contain data
+    """
     
-    if not os.path.exists('img_data'):
-        os.mkdir('img_data')
+    if not os.path.exists('mfcc'):
+        os.mkdir('mfcc')
     
     #list all folder
     paths = list_files(path_to_data)
@@ -123,7 +129,7 @@ def create_data(path_to_data):
     folders = list(folders)
     
     #create sub folder in img_data
-    os.chdir('./img_data')
+    os.chdir('mfcc')
     for folder in folders:
         if not os.path.exists(folder):
             os.mkdir(folder)     
@@ -137,34 +143,18 @@ def create_data(path_to_data):
         
         folder = path_.split('/')[-2]
         
-        new_path = './img_data/' + folder + '/{}.jpg'.format(i);
+        new_path = './mfcc/' + folder + '/{}.jpg'.format(i);
         
         cv2.imwrite(new_path, mfcc_img)
         
 if __name__=='__main__':
+    #input
     path_to_data = args['input']
     
+    #normalization data
     normalization(path_to_data);
+    
+    #create dataset
     create_data(path_to_data)
+    
     print('Done.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

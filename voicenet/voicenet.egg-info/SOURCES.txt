@@ -1,0 +1,10 @@
+MANIFEST.in
+README.rst
+setup.py
+voicenet/__init__.py
+voicenet/voicenet.py
+voicenet.egg-info/PKG-INFO
+voicenet.egg-info/SOURCES.txt
+voicenet.egg-info/dependency_links.txt
+voicenet.egg-info/not-zip-safe
+voicenet.egg-info/top_level.txt

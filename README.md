@@ -10,12 +10,30 @@ Code accompanying the paper. All codes assume running from root directory. Pleas
 
 ## Over View
 ``` 
-This is the architecture of the model I looked for based on the Genetic Algorithm on the Famous Voice Dataset.
+VoiceNet - convolutional neural network architecture found by nondominated sorting genetic algorithm ii with code: 0-10 - 1-01-001 - 0-00. Two goals are optimized: accuracy and cost calculation
 ```
 
 ## Requirements
 ``` 
-Python == 3.7.6, Tensorflow == 2.3.0, Keras == 2.4.3, Pydub == 0.24.1, Librosa
+glob2==0.7
+h5py==2.10.0
+imutils==0.5.3
+Keras==2.4.3
+librosa==0.6.3
+matplotlib==3.2.2
+numpy==1.19.5
+opencv-contrib-python==4.1.2.30
+opencv-python==4.1.2.30
+pandas==1.1.5
+Pillow==7.0.0
+prefetch-generator==1.0.1
+pydub==0.24.1
+scikit-image==0.16.2
+scipy==1.4.1
+sklearn==0.0
+spacy==2.2.4
+tensorboard==2.4.0
+tensorflow==2.4.0
 
 pip install -r requirements.txt
 ```
@@ -38,12 +56,12 @@ model/voicenet.hdf5
 
 ## Normalization data
 ``` 
-python normalization_data.py -i ./data/
+python normalization_data.py --cfg=cfg/config.cfg
 ```
 
 ## Training
 ``` 
-python train.py -batch 64 -class 80 -epochs 100
+python train.py -batch_size 32 -num_class 40 -epochs 100
 ```
 
 ## Citations
