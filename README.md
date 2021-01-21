@@ -14,11 +14,13 @@ VoiceNet - convolutional neural network architecture found by nondominated sorti
 ```
 
 ## Requirements
-``` 
+```
+python == 3.6.9 #mandatory
+
 glob2==0.7
 h5py==2.10.0
 imutils==0.5.3
-Keras==2.4.3
+Keras==2.4.3 #mandatory
 librosa==0.6.3
 matplotlib==3.2.2
 numpy==1.19.5
@@ -33,15 +35,26 @@ scipy==1.4.1
 sklearn==0.0
 spacy==2.2.4
 tensorboard==2.4.0
-tensorflow==2.4.0
+tensorflow==2.4.0 #mandatory
 
 pip install -r requirements.txt
 ```
 
-## Pretrained models
+## Sample pretrained models
 ``` 
 model/voicenet.hdf5
 ```
+## Setup
+``` 
+To setup:
+  >>> pip install voicenet
+
+To use:
+  >>> from voicenet import VoiceNet
+  >>> model = VoiceNet(input_shape=(40,80,1), classes=40)
+  >>> model.summary()
+```
+
 
 ## Dataset
 ``` 
