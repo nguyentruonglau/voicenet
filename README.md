@@ -6,7 +6,7 @@ All codes assume running from root directory. Please update the sys path at the 
 > Nguyễn Trường Lâu - Student at University of Information Technology (UIT)
 >
 
-![overview](https://github.com/nguyentruonglau/VoiceNet/blob/main/img/cnn.png "Model Architecture")
+![overview](https://github.com/nguyentruonglau/VoiceNet/blob/main/img/cnn_architecture.png "Model Architecture")
 
 ## Over View
 ``` 
