@@ -10,7 +10,8 @@ All codes assume running from root directory. Please update the sys path at the 
 
 ## Over View
 ``` 
-VoiceNet - convolutional neural network architecture found by nondominated sorting genetic algorithm ii with code: 0-10 - 1-01-001 - 0-00. Two goals are optimized: accuracy and cost calculation
+VoiceNet - convolutional neural network architecture found by nondominated sorting genetic algorithm ii 
+with code: 0-10 - 1-01-001 - 0-00. Two goals are optimized: accuracy and cost calculation
 ```
 
 ## Requirements
